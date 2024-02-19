@@ -25,6 +25,6 @@
 
 - Email：1792249443@qq.com 📧
 - GitHub：[lueluelue12138](https://github.com/lueluelue12138) 🚀
-- 博客：[东的备忘录](dongtech.top) ✨
+- 博客：[东的备忘录](http://dongtech.top) ✨
 
 感谢你的支持和关注！祝你学习进步，生活愉快！🌟
