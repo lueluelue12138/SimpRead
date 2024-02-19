@@ -2,7 +2,6 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/language-Java-orange">
-  <img src="https://img.shields.io/github/license/lueluelue12138/SimpRead">
   <img src="https://img.shields.io/github/stars/lueluelue12138/SimpRead?style=social">
 </p>
 
