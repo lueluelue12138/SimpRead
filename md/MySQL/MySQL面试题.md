@@ -4,9 +4,9 @@
 
 Buffer Pool：缓冲池，简称BP。其作用是用来缓存表数据与索引数据，减少磁盘IO操作，提升效率。
 
-Buffer Pool由**缓存数据页(Page)** 和 对缓存数据页进行描述的**控制块** 组成, 控制块中存储着对应缓存页的所属的	表空间、数据页的编号、以及对应缓存页在Buffer Pool中的地址等信息.
+Buffer Pool由**缓存数据页(Page)** 和 对缓存数据页进行描述的**控制块** 组成, 控制块中存储着对应缓存页的所属的表空间、数据页的编号、以及对应缓存页在Buffer Pool中的地址等信息.
 
-Buffer Pool默认大小是128M, 以Page页为单位，Page页默认大小16K，而控制块的大小约为数据页的5%，大	概是800字节。
+Buffer Pool默认大小是128M, 以Page页为单位，Page页默认大小16K，而控制块的大小约为数据页的5%，大概是800字节。
 
 ![image.png](https://fynotefile.oss-cn-zhangjiakou.aliyuncs.com/fynote/fyfile/16657/1607287731925286912/5b04714e186c412f89efeb7047c34ef2.png)
 
@@ -31,9 +31,9 @@ Page根据状态可以分为三种类型：
 
 ![image.png](https://fynotefile.oss-cn-zhangjiakou.aliyuncs.com/fynote/fyfile/16657/1607287731925286912/b5a63ddee29646edaa90695894203203.png)
 
-* free page ： 空闲page，未被使用
-* clean page：被使用page，数据没有被修改过
-* dirty page：脏页，被使用page，数据被修改过，Page页中数据和磁盘的数据产生了不一致
+* **free page** ： 空闲page，未被使用
+* **clean page**：被使用page，数据没有被修改过
+* **dirty page**：脏页，被使用page，数据被修改过，Page页中数据和磁盘的数据产生了不一致
 
 Page页如何管理
 
@@ -41,14 +41,14 @@ Page页如何管理
 
 1. free list：表示空闲缓冲区，管理free page
 
-* free链表是把所有空闲的缓冲页对应的控制块作为一个个的节点放到一个链表中，这个链表便称之为free链表
+* free链表是把所有空闲的缓冲页对应的**控制块**作为一个个的节点放到一个链表中，这个链表便称之为free链表
 * 基节点:  free链表中只有一个基节点是不记录缓存页信息(单独申请空间)，它里面就存放了free链表的头节点的地址，尾节点的地址，还有free链表里当前有多少个节点。
 
 ![image.png](https://fynotefile.oss-cn-zhangjiakou.aliyuncs.com/fynote/fyfile/16657/1607287731925286912/2cbb45488a444bfea024a5ebba29d6ce.png)
 
 2.flush list： 表示需要刷新到磁盘的缓冲区，管理dirty page，内部page按修改时间排序。
 
-* InnoDB引擎为了提高处理效率，在每次修改缓冲页后，并不是立刻把修改刷新到磁盘上，而是在未来的某个时间点进行刷新操作. 所以需要使用到flush链表存储脏页，凡是被修改过的缓冲页对应的控制块都会作为节点加入到flush链表.
+* InnoDB引擎为了提高处理效率，在每次修改缓冲页后，并**不是立刻把修改刷新到磁盘上，而是在未来的某个时间点进行刷新操作**. 所以需要使用到flush链表存储脏页，凡是被修改过的缓冲页对应的控制块都会作为节点加入到flush链表.
 * flush链表的结构与free链表的结构相似
 
 ![image.png](https://fynotefile.oss-cn-zhangjiakou.aliyuncs.com/fynote/fyfile/16657/1607287731925286912/1ba2e62477434290989d159632574704.png)
