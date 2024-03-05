@@ -8,20 +8,26 @@
 3.  Socket 是什么呢？
 4.  你会使用它们吗？
 
-什么是 TCP/IP、UDP？
+#### 什么是 TCP/IP、UDP？
 
 TCP/IP（Transmission Control Protocol/Internet Protocol）即传输控制协议 / 网间协议，是一个工业标准的协议集，它是为广域网（WANs）设计的。  
 UDP（User Data Protocol，用户数据报协议）是与 TCP 相对应的协议。它是属于 TCP/IP 协议族中的一种。  
 这里有一张图，表明了这些协议的关系。  
 ![](https://img-blog.csdn.net/20180913104811138?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ppdXNoaW1hbnlh/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)  
 TCP/IP 协议族包括运输层、网络层、链路层。现在你知道 TCP/IP 与 UDP 的关系了吧。  
-Socket 在哪里呢？  
+
+#### Socket 在哪里呢？  
+
 在图 1 中，我们没有看到 Socket 的影子，那么它到底在哪里呢？还是用图来说话，一目了然。  
 ![](https://img-blog.csdn.net/2018091310482621?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ppdXNoaW1hbnlh/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)  
 原来 Socket 在这里。  
-Socket 是什么呢？  
+
+#### Socket 是什么呢？  
+
 Socket 是应用层与 TCP/IP 协议族通信的中间软件抽象层，它是一组接口。在设计模式中，Socket 其实就是一个门面模式，它把复杂的 TCP/IP 协议族隐藏在 Socket 接口后面，对用户来说，一组简单的接口就是全部，让 Socket 去组织数据，以符合指定的协议。  
-你会使用它们吗？  
+
+##### 你会使用它们吗？  
+
 前人已经给我们做了好多的事了，网络间的通信也就简单了许多，但毕竟还是有挺多工作要做的。以前听到 Socket 编程，觉得它是比较高深的编程知识，但是只要弄清 Socket 编程的工作原理，神秘的面纱也就揭开了。  
 一个生活中的场景。你要打电话给一个朋友，先拨号，朋友听到电话铃声后提起电话，这时你和你的朋友就建立起了连接，就可以讲话了。等交流结束，挂断电话结束此次交谈。 生活中的场景就解释了这工作原理，也许 TCP/IP 协议族就是诞生于生活中，这也不一定。  
 ![](https://img-blog.csdn.net/20180913104844708?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ppdXNoaW1hbnlh/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
@@ -44,7 +50,9 @@ Socket 是应用层与 TCP/IP 协议族通信的中间软件抽象层，它是�
 4、socket 中 TCP 的三次握手建立连接详解  
 5、socket 中 TCP 的四次握手释放连接详解  
 6、一个例子  
-1、网络中进程之间如何通信？  
+
+### 1、网络中进程之间如何通信？  
+
 本地的进程间通信（IPC）有很多种方式，但可以总结为下面 4 类：
 
 消息传递（管道、FIFO、消息队列）  
@@ -55,16 +63,19 @@ Socket 是应用层与 TCP/IP 协议族通信的中间软件抽象层，它是�
 
 使用 TCP/IP 协议的应用程序通常采用应用编程接口：UNIX BSD 的套接字（socket）和 UNIX System V 的 TLI（已经被淘汰），来实现网络进程之间的通信。就目前而言，几乎所有的应用程序都是采用 socket，而现在又是网络时代，网络中进程通信是无处不在，这就是我为什么说 “一切皆 socket”。
 
-2、什么是 Socket？  
+### 2、什么是 Socket？  
+
 上面我们已经知道网络中的进程是通过 socket 来通信的，那什么是 socket 呢？socket 起源于 Unix，而 Unix/Linux 基本哲学之一就是 “一切皆文件”，都可以用“打开 open –> 读写 write/read –> 关闭 close” 模式来操作。我的理解就是 Socket 就是该模式的一个实现，socket 即是一种特殊的文件，一些 socket 函数就是对其进行的操作（读 / 写 IO、打开、关闭），这些函数我们在后面进行介绍。
 
 socket 一词的起源  
 在组网领域的首次使用是在 1970 年 2 月 12 日发布的文献 IETF RFC33 中发现的，撰写者为 Stephen Carr、Steve Crocker 和 Vint Cerf。根据美国计算机历史博物馆的记载，Croker 写道：“命名空间的元素都可称为套接字接口。一个套接字接口构成一个连接的一端，而一个连接可完全由一对套接字接口规定。” 计算机历史博物馆补充道：“这比 BSD 的套接字接口定义早了大约 12 年。”
 
-3、socket 的基本操作  
+### 3、socket 的基本操作  
+
 既然 socket 是 “open—write/read—close” 模式的一种实现，那么 socket 就提供了这些操作对应的函数接口。下面以 TCP 为例，介绍几个基本的 socket 接口函数。
 
-3.1、socket() 函数  
+#### 3.1、socket() 函数  
+
 int socket(int domain, int type, int protocol);  
 socket 函数对应于普通文件的打开操作。普通文件的打开操作返回一个文件描述字，而 socket() 用于创建一个 socket 描述符（socket descriptor），它唯一标识一个 socket。这个 socket 描述字跟文件描述字一样，后续的操作都有用到它，把它作为参数，通过它来进行一些读写操作。
 
@@ -77,7 +88,8 @@ protocol：故名思意，就是指定协议。常用的协议有，IPPROTO_TCP�
 
 当我们调用 socket 创建一个 socket 时，返回的 socket 描述字它存在于协议族（address family，AF_XXX）空间中，但没有一个具体的地址。如果想要给它赋值一个地址，就必须调用 bind() 函数，否则就当调用 connect()、listen() 时系统会自动随机分配一个端口。
 
-3.2、bind() 函数  
+#### 3.2、bind() 函数  
+
 正如上面所说 bind() 函数把一个地址族中的特定地址赋给 socket。例如对应 AF_INET、AF_INET6 就是把一个 ipv4 或 ipv6 地址和端口号组合赋给 socket。
 
 int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);  
@@ -127,7 +139,8 @@ addrlen：对应的是地址的长度。
 
 所以： 在将一个地址绑定到 socket 的时候，请先将主机字节序转换成为网络字节序，而不要假定主机字节序跟网络字节序一样使用的是 Big-Endian。由于 这个问题曾引发过血案！公司项目代码中由于存在这个问题，导致了很多莫名其妙的问题，所以请谨记对主机字节序不要做任何假定，务必将其转化为网络字节序再 赋给 socket。
 
-3.3、listen()、connect() 函数  
+#### 3.3、listen()、connect() 函数  
+
 如果作为一个服务器，在调用 socket()、bind() 之后就会调用 listen() 来监听这个 socket，如果客户端这时调用 connect() 发出连接请求，服务器端就会接收到这个请求。
 
 int listen(int sockfd, int backlog);  
@@ -136,7 +149,8 @@ listen 函数的第一个参数即为要监听的 socket 描述字，第二个�
 
 connect 函数的第一个参数即为客户端的 socket 描述字，第二参数为服务器的 socket 地址，第三个参数为 socket 地址的长度。客户端通过调用 connect 函数来建立与 TCP 服务器的连接。
 
-3.4、accept() 函数  
+#### 3.4、accept() 函数  
+
 TCP 服务器端依次调用 socket()、bind()、listen() 之后，就会监听指定的 socket 地址了。TCP 客户端依次调用 socket()、connect() 之后就想 TCP 服务器发送了一个连接请求。TCP 服务器监听到这个请求之后，就会调用 accept() 函数取接收请求，这样连接就建立好了。之后就可以开始网络 I/O 操作了，即类同于普通文件的读写 I/O 操作。
 
 int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);  
@@ -144,7 +158,8 @@ accept 函数的第一个参数为服务器的 socket 描述字，第二个参�
 
 注意：accept 的第一个参数为服务器的 socket 描述字，是服务器开始调用 socket() 函数生成的，称为监听 socket 描述字；而 accept 函数返回的是已连接的 socket 描述字。一个服务器通常通常仅仅只创建一个监听 socket 描述字，它在该服务器的生命周期内一直存在。内核为每个由服务器进程接受的客户连接创建了一个已连接 socket 描述字，当服务器完成了对某个客户的服务，相应的已连接 socket 描述字就被关闭。
 
-3.5、read()、write() 等函数  
+#### 3.5、read()、write() 等函数  
+
 万事具备只欠东风，至此服务器与客户已经建立好连接了。可以调用网络 I/O 进行读写操作了，即实现了网咯中不同进程之间的通信！网络 I/O 操作有下面几组：
 
 read()/write()  
@@ -181,7 +196,8 @@ write 函数将 buf 中的 nbytes 字节内容写入文件描述符 fd. 成功�
 
 其它的我就不一一介绍这几对 I/O 函数了，具体参见 man 文档或者 baidu、Google，下面的例子中将使用到 send/recv。
 
-3.6、close() 函数  
+#### 3.6、close() 函数  
+
 在服务器与客户端建立连接之后，会进行一些读写操作，完成了读写操作就要关闭相应的 socket 描述字，好比操作完打开的文件要调用 fclose 关闭打开的文件。
 
 #include  
@@ -190,7 +206,8 @@ close 一个 TCP socket 的缺省行为时把该 socket 标记为以关闭，然
 
 注意：close 操作只是使相应 socket 描述字的引用计数 - 1，只有当引用计数为 0 的时候，才会触发 TCP 客户端向服务器发送终止连接请求。
 
-4、socket 中 TCP 的三次握手建立连接详解  
+### 4、socket 中 TCP 的三次握手建立连接详解  
+
 我们知道 tcp 建立连接要进行 “三次握手”，即交换三个分组。大致流程如下：
 
 客户端向服务器发送一个 SYN J  
@@ -206,7 +223,8 @@ close 一个 TCP socket 的缺省行为时把该 socket 标记为以关闭，然
 
 总结：客户端的 connect 在三次握手的第二个次返回，而服务器端的 accept 在三次握手的第三次返回。
 
-5、socket 中 TCP 的四次握手释放连接详解  
+### 5、socket 中 TCP 的四次握手释放连接详解  
+
 上面介绍了 socket 中 TCP 的三次握手建立过程，及其涉及的 socket 函数。现在我们介绍 socket 中的四次握手释放连接的过程，请看下图：
 
 ![](https://img-blog.csdn.net/20180913105058539?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ppdXNoaW1hbnlh/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
@@ -221,7 +239,8 @@ close 一个 TCP socket 的缺省行为时把该 socket 标记为以关闭，然
 接收到这个 FIN 的源发送端 TCP 对它进行确认。  
 这样每个方向上都有一个 FIN 和 ACK。
 
-6. 下面给出实现的一个实例  
+### 6、下面给出实现的一个实例  
+
 首先，先给出实现的截图
 
 ![](https://img-blog.csdn.net/20180913105111295?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ppdXNoaW1hbnlh/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
